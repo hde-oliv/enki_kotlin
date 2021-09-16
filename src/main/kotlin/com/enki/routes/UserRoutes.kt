@@ -7,7 +7,7 @@ import io.ktor.routing.*
 fun Route.userRouting() {
     route("/") {
         get {
-            call.respondText("Hey ya!")
+            call.respondRedirect("/docs", true)
         }
     }
 }
