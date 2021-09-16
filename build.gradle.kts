@@ -12,7 +12,7 @@ plugins {
 group = "com.enki"
 version = "0.0.1"
 application {
-    mainClass.set("com.enki.ApplicationKt")
+    mainClass.set("com.enki.api.ApplicationKt")
 }
 
 repositories {
@@ -36,4 +36,8 @@ dependencies {
     implementation("ch.qos.logback:logback-classic:$logback_version")
     testImplementation("io.ktor:ktor-server-tests:$ktor_version")
     testImplementation("org.jetbrains.kotlin:kotlin-test:$kotlin_version")
+}
+
+tasks.create("stage") {
+    dependsOn("installDist")
 }
