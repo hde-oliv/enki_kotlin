@@ -21,7 +21,7 @@ fun Route.userRouting() {
                 fetchIntraInformation(id) ?: return@get call.respondText(
                     "No user with id $id",
                     status = HttpStatusCode.NotFound
-            );
+            )
             call.respond(user)
         }
     }
