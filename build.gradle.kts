@@ -2,11 +2,13 @@ val ktor_version: String by project
 val kotlin_version: String by project
 val logback_version: String by project
 val prometeus_version : String by project
+val exposedVersion : String by project
 
 plugins {
     application
     kotlin("jvm") version "1.5.30"
-                id("org.jetbrains.kotlin.plugin.serialization") version "1.5.30"
+    id("org.jetbrains.kotlin.plugin.serialization") version "1.5.30"
+    id("com.jetbrains.exposed.gradle.plugin") version "0.1.3"
 }
 
 group = "com.enki"
@@ -38,6 +40,10 @@ dependencies {
     implementation("io.ktor:ktor-client-cio:$ktor_version")
     implementation("io.ktor:ktor-client-serialization:$ktor_version")
     implementation("io.ktor:ktor-client-auth:$ktor_version")
+    implementation("org.jetbrains.exposed:exposed-core:$exposedVersion")
+    implementation("org.jetbrains.exposed:exposed-dao:$exposedVersion")
+    implementation("org.jetbrains.exposed:exposed-jdbc:$exposedVersion")
+    implementation("com.impossibl.pgjdbc-ng:pgjdbc-ng:0.8.9")
     testImplementation("io.ktor:ktor-server-tests:$ktor_version")
     testImplementation("org.jetbrains.kotlin:kotlin-test:$kotlin_version")
 }

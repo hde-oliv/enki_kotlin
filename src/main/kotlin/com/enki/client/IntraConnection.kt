@@ -13,7 +13,7 @@ import io.ktor.http.*
 import kotlinx.serialization.*
 import com.enki.models.*
 
-suspend fun fetchIntraInformation(id: String): UserInfo? {
+suspend fun fetchIntraInformation(id: String): UserDTO {
     val intraSecret: String = System.getenv("INTRA_SECRET") ?: ""
     val intraID: String = System.getenv("INTRA_ID") ?: ""
 
@@ -58,13 +58,18 @@ suspend fun fetchIntraInformation(id: String): UserInfo? {
     }
 
     var userInfo: UserInfo?
+    var code: HttpStatusCode = HttpStatusCode.OK
     userInfo = try {
          intraClient.get("https://api.intra.42.fr/v2/users/" + id)
     } catch (e: ClientRequestException) {
-       null
+        System.err.println(e)
+        code = e.response.status
+        null
     }
 
     tokenClient.close()
     intraClient.close()
-    return userInfo
+    return UserDTO(userInfo, code)
 }
+
+data class UserDTO(val user: UserInfo?, val code: HttpStatusCode)
