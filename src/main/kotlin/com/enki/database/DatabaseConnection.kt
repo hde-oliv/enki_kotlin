@@ -3,7 +3,7 @@ package com.enki.database
 import com.enki.models.UserInfo
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.transactions.transaction
-import com.impossibl.postgres.jdbc.PGDriver
+import com.impossibl.postgres.jdbc.*
 
 object User : Table() {
     val login = varchar("login", 10)
@@ -23,14 +23,10 @@ fun databaseConnection(userInfo: UserInfo) {
     transaction {
         addLogger(StdOutSqlLogger)
 
-        try {
-            SchemaUtils.create (User)
-        } finally {
-            print("")
-        }
+        SchemaUtils.create (User)
+        User.deleteWhere { User.login eq userInfo.login }
 
-        try {
-            User.update({ User.login eq userInfo.login}) {
+        User.insert {
                 it[login] = userInfo.login
                 it[displayName] = userInfo.displayName
                 it[isStaff] = userInfo.isStaff
@@ -38,15 +34,5 @@ fun databaseConnection(userInfo: UserInfo) {
                 it[correctionPoints] = userInfo.correctionPoints
                 it[wallet] = userInfo.wallet
             }
-        } catch (e: Exception) {
-            User.insert {
-                it[login] = userInfo.login
-                it[displayName] = userInfo.displayName
-                it[isStaff] = userInfo.isStaff
-                it[profileImage] = userInfo.profileImage
-                it[correctionPoints] = userInfo.correctionPoints
-                it[wallet] = userInfo.wallet
-            }
-        }
     }
 }
