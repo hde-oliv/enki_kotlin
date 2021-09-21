@@ -1,8 +1,7 @@
 <div align="center">
-  <img src="./assets/enki.png"/>
+  <img src="https://raw.githubusercontent.com/hde-oliv/enki/master/assets/enki.png"/>
 </div>
 <div align="center">
-  <img src="https://github.com/42sp/42labs-selection-process-hde-oliv/actions/workflows/release-ci.yml/badge.svg"/>
   <p> A REST API that fetches custom data from École 42 users, written in Kotlin.</p>
 </div>
 
@@ -20,3 +19,4 @@ This is a simple clone of my other [REST API](https://github.com/hde-oliv/enki) 
 - [ ] documentation
 - [ ] containerization
 - [ ] how to host it
+- [ ] ci/cd pipeline
