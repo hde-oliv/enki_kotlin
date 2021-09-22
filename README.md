@@ -14,9 +14,3 @@
 ## Brief Introduction:
 
 This is a simple clone of my other [REST API](https://github.com/hde-oliv/enki) made in C, constructed to gain more understanding about Kotlin in general.
-
-##  Todo:
-- [ ] documentation
-- [ ] containerization
-- [ ] how to host it
-- [ ] ci/cd pipeline
