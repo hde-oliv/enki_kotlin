@@ -11,9 +11,6 @@ import io.ktor.http.*
 
 fun Route.userRouting() {
     route("/") {
-        get {
-            call.respondRedirect("/docs", true)
-        }
         get ("{id}") {
             val id = call.parameters["id"] ?: return@get call.respondText(
                 "Missing or malformed id.",

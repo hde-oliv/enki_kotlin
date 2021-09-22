@@ -17,8 +17,11 @@ object User : Table() {
 }
 
 fun databaseConnection(userInfo: UserInfo) {
+    val psqlDB: String = System.getenv("PSQL_DB") ?: ""
+    val psqlUser: String = System.getenv("PSQL_USER") ?: ""
+    val psqlPassword: String = System.getenv("PSQL_PASSWORD") ?: ""
 
-    Database.connect("jdbc:pgsql://localhost:5432/postgres", driver = "com.impossibl.postgres.jdbc.PGDriver", user = "postgres", password = "bananinha")
+    Database.connect("jdbc:pgsql://localhost:5432/$psqlDB", driver = "com.impossibl.postgres.jdbc.PGDriver", user = psqlUser, password = psqlPassword)
 
     transaction {
         addLogger(StdOutSqlLogger)
