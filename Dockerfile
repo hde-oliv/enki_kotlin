@@ -5,6 +5,6 @@ COPY        . .
 
 EXPOSE      8080
 
-CMD         [ "./gradlew", "stage" ]
+RUN         ./gradlew stage
 
-ENTRYPOINT  ["./build/install/com.hdeoliv.enki/bin/com.hdeoliv.enki"]
+ENTRYPOINT  [ "./build/install/com.hdeoliv.enki/bin/com.hdeoliv.enki" ]

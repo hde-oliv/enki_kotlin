@@ -17,9 +17,9 @@ object User : Table() {
 }
 
 fun databaseConnection(userInfo: UserInfo) {
-    val psqlDB: String = System.getenv("PSQL_DB") ?: ""
-    val psqlUser: String = System.getenv("PSQL_USER") ?: ""
-    val psqlPassword: String = System.getenv("PSQL_PASSWORD") ?: ""
+    val psqlDB: String = System.getenv("POSTGRES_DB") ?: ""
+    val psqlUser: String = System.getenv("POSTGRES_USER") ?: ""
+    val psqlPassword: String = System.getenv("POSTGRES_PASSWORD") ?: ""
 
     Database.connect(
             "jdbc:pgsql://localhost:5432/$psqlDB",

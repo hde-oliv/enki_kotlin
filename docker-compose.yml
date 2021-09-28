@@ -1,0 +1,19 @@
+services:
+  enki:
+    build: .
+    ports:
+      - 8080:8080
+    environment:
+      INTRA_ID:
+      INTRA_SECRET:
+      POSTGRES_DB: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_USER: postgres
+  postgres:
+    ports:
+      - 5432:5432
+    image: "postgres:alpine"
+    environment:
+      POSTGRES_DB: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_USER: postgres
