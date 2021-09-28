@@ -1,9 +1,9 @@
 package com.enki.database
 
 import com.enki.models.UserInfo
+import com.impossibl.postgres.jdbc.*
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.transactions.transaction
-import com.impossibl.postgres.jdbc.*
 
 object User : Table() {
     val login = varchar("login", 10)
@@ -13,7 +13,7 @@ object User : Table() {
     val correctionPoints = integer("correction_point")
     val wallet = integer("wallet")
 
-    override val primaryKey = PrimaryKey(login, name = "INTRA_User_ID")
+    override val primaryKey = PrimaryKey(login, name = "INTRA_USER_ID")
 }
 
 fun databaseConnection(userInfo: UserInfo) {
@@ -21,15 +21,25 @@ fun databaseConnection(userInfo: UserInfo) {
     val psqlUser: String = System.getenv("PSQL_USER") ?: ""
     val psqlPassword: String = System.getenv("PSQL_PASSWORD") ?: ""
 
-    Database.connect("jdbc:pgsql://localhost:5432/$psqlDB", driver = "com.impossibl.postgres.jdbc.PGDriver", user = psqlUser, password = psqlPassword)
+    Database.connect(
+            "jdbc:pgsql://localhost:5432/$psqlDB",
+            driver = "com.impossibl.postgres.jdbc.PGDriver",
+            user = psqlUser,
+            password = psqlPassword
+    )
 
     transaction {
         addLogger(StdOutSqlLogger)
-
-        SchemaUtils.create (User)
-        User.deleteWhere { User.login eq userInfo.login }
-
-        User.insert {
+        SchemaUtils.create(User)
+    }
+    val userExists = transaction {
+        addLogger(StdOutSqlLogger)
+        User.select { User.login eq userInfo.login }.toList()
+    }
+    transaction {
+        addLogger(StdOutSqlLogger)
+        if (userExists.size == 0) {
+            User.insert {
                 it[login] = userInfo.login
                 it[displayName] = userInfo.displayName
                 it[isStaff] = userInfo.isStaff
@@ -37,5 +47,15 @@ fun databaseConnection(userInfo: UserInfo) {
                 it[correctionPoints] = userInfo.correctionPoints
                 it[wallet] = userInfo.wallet
             }
+        } else {
+            User.update({ User.login eq userInfo.login }) {
+                it[login] = userInfo.login
+                it[displayName] = userInfo.displayName
+                it[isStaff] = userInfo.isStaff
+                it[profileImage] = userInfo.profileImage
+                it[correctionPoints] = userInfo.correctionPoints
+                it[wallet] = userInfo.wallet
+            }
+        }
     }
 }
